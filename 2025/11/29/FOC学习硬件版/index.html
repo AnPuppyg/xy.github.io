@@ -19,25 +19,26 @@
   <meta name="author" content="yyx">
   <meta name="keywords" content="">
   
-    <meta name="description" content="基于STM32F429VET6和ADS8688的遥控器">
+    <meta name="description" content="FOC学习-硬件版1.引言从大一下学期开始接触Benjamin的VESC，复刻了七八个版本才成功，硬件懵懵懂懂，软件一窍不通，希望通过写这篇文章彻底弄懂VESC的硬件。  2.模块解读单片机控制部分STM32大致可以分为三个部分：  ADC采样：PA0&#x2F;1&#x2F;2对三相电压进行采样，PC0&#x2F;1&#x2F;2&#x2F;3对三相电流和总电压进行采样 驱动DRV8301：PA">
 <meta property="og:type" content="article">
-<meta property="og:title" content="F4-ADS遥控器">
-<meta property="og:url" content="http://example.com/2025/11/29/%E5%9F%BA%E4%BA%8EADS8688%E5%92%8CSTM32F429VET6%E7%9A%84%E9%81%A5%E6%8E%A7%E5%99%A8/index.html">
+<meta property="og:title" content="Welcome">
+<meta property="og:url" content="http://example.com/2025/11/29/FOC%E5%AD%A6%E4%B9%A0%E7%A1%AC%E4%BB%B6%E7%89%88/index.html">
 <meta property="og:site_name" content="Welcome">
-<meta property="og:description" content="基于STM32F429VET6和ADS8688的遥控器">
+<meta property="og:description" content="FOC学习-硬件版1.引言从大一下学期开始接触Benjamin的VESC，复刻了七八个版本才成功，硬件懵懵懂懂，软件一窍不通，希望通过写这篇文章彻底弄懂VESC的硬件。  2.模块解读单片机控制部分STM32大致可以分为三个部分：  ADC采样：PA0&#x2F;1&#x2F;2对三相电压进行采样，PC0&#x2F;1&#x2F;2&#x2F;3对三相电流和总电压进行采样 驱动DRV8301：PA">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/img/ykq1.png">
-<meta property="og:image" content="http://example.com/img/ykq2.png">
-<meta property="og:image" content="http://example.com/img/ykq3.png">
-<meta property="article:published_time" content="2025-11-29T04:11:26.414Z">
-<meta property="article:modified_time" content="2025-11-29T10:28:15.261Z">
+<meta property="og:image" content="http://example.com/img/FOC_Hardware4.png">
+<meta property="og:image" content="http://example.com/img/FOC_Hardware2.png">
+<meta property="og:image" content="http://example.com/img/FOC_Hardware3.png">
+<meta property="og:image" content="http://example.com/img/FOC_Hardware1.png">
+<meta property="article:published_time" content="2025-11-29T15:11:54.351Z">
+<meta property="article:modified_time" content="2025-11-29T15:11:18.085Z">
 <meta property="article:author" content="yyx">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/img/ykq1.png">
+<meta name="twitter:image" content="http://example.com/img/FOC_Hardware4.png">
   
   
   
-  <title>F4-ADS遥控器 - Welcome</title>
+  <title>Welcome</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -203,7 +204,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="F4-ADS遥控器"></span>
+            <span id="subtitle" data-typed-text=""></span>
           
         </div>
 
@@ -214,8 +215,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-11-29 12:11" pubdate>
-          2025年11月29日 中午
+        <time datetime="2025-11-29 23:11" pubdate>
+          2025年11月29日 晚上
         </time>
       </span>
     
@@ -226,7 +227,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          641 字
+          986 字
         
       </span>
     
@@ -237,7 +238,7 @@
         
         
         
-          6 分钟
+          9 分钟
         
       </span>
     
@@ -274,52 +275,34 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">F4-ADS遥控器</h1>
+            <h1 id="seo-header"></h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="【F4-ADS】基于STM32F429VET6和ADS8688的遥控器"><a href="#【F4-ADS】基于STM32F429VET6和ADS8688的遥控器" class="headerlink" title="【F4-ADS】基于STM32F429VET6和ADS8688的遥控器"></a>【F4-ADS】基于STM32F429VET6和ADS8688的遥控器</h1><h2 id="1-引言"><a href="#1-引言" class="headerlink" title="1.引言"></a>1.引言</h2><p>自我进实验室以来，见过两种遥控器，一种是以STM32F103RCT6为主控，摇杆的四个通道直接接到32的ADC引脚采数据，痛点就是STM32F103RCT6的ADC只有12位，采摇杆数据很鸡肋，遂出现了第二种，我们发现STM32H7的ADC是16位，正点原子阿波罗核心板上还有外接的sdram，可以上ui，用了4.3寸IPS显示屏，痛点是成本高，程序调起来也复杂。总之，第一种遥控器太简陋，第二种遥控器太豪华，遂设计一款折中的遥控器——基于STM32F429VET6和ADS8688的遥控器，简称F4-ADS。</p>
-<h2 id="2-模块说明"><a href="#2-模块说明" class="headerlink" title="2.模块说明"></a>2.模块说明</h2><p>F4-ADS的配置如下：</p>
-<p>摇杆：PS5 TMR霍尔摇杆</p>
-<p>ADC：ADS8688是16位8通道500kspsADC芯片，我们使用其中4个通道采两个摇杆的xy，1个通道采电池电量</p>
-<p>MCU：STM32F429VET6</p>
-<p>屏幕：ST7789驱动的2寸屏幕</p>
-<p>外设：1个NOR FLASH、4个LED、1个4x4矩阵键盘、2个独立按键、1个蜂鸣器、1个typeC+CH340有线调试、1个NRF</p>
-<p><img src="/img/ykq1.png" srcset="/img/loading.gif" lazyload alt="F4-ADS"><br><img src="/img/ykq2.png" srcset="/img/loading.gif" lazyload alt="F4-ADS"></p>
-<p>原理图较简单，只说明ADS8688采集电路</p>
-<p>通道引脚串联270R电阻，起限流作用，信号和GND间接100nF电容滤波，外接ADR444电压基准芯片为ADS8688提供4.096V基准电压</p>
-<p><img src="/img/ykq3.png" srcset="/img/loading.gif" lazyload alt="ADS8688"></p>
-<p>PCB大概是15cm x 10cm，为了节约成本画了2层板，大部分电容电阻是0402封装，节省空间。</p>
-<h2 id="3-说明"><a href="#3-说明" class="headerlink" title="3.说明"></a>3.说明</h2><p><strong>新手开源，多有不足请多见谅</strong>。</p>
-
+                <h1 id="FOC学习-硬件版"><a href="#FOC学习-硬件版" class="headerlink" title="FOC学习-硬件版"></a>FOC学习-硬件版</h1><h2 id="1-引言"><a href="#1-引言" class="headerlink" title="1.引言"></a>1.引言</h2><p>从大一下学期开始接触Benjamin的VESC，复刻了七八个版本才成功，硬件懵懵懂懂，软件一窍不通，希望通过写这篇文章彻底弄懂VESC的硬件。</p>
+<p><img src="/img/FOC_Hardware4.png" srcset="/img/loading.gif" lazyload alt="VESC"></p>
+<h2 id="2-模块解读"><a href="#2-模块解读" class="headerlink" title="2.模块解读"></a>2.模块解读</h2><h3 id="单片机控制部分"><a href="#单片机控制部分" class="headerlink" title="单片机控制部分"></a>单片机控制部分</h3><p>STM32大致可以分为三个部分：</p>
+<p><img src="/img/FOC_Hardware2.png" srcset="/img/loading.gif" lazyload alt="VESC"></p>
+<p><strong>ADC采样</strong>：PA0&#x2F;1&#x2F;2对三相电压进行采样，PC0&#x2F;1&#x2F;2&#x2F;3对三相电流和总电压进行采样</p>
+<p><strong>驱动DRV8301</strong>：PA8&#x2F;9&#x2F;10、PB13&#x2F;14&#x2F;15输出PWM信号驱动DRV8301，SPI3与DRV8301进行通信读取状态，PB5接EN_GATE选择是否启用栅极驱动和采样电流放大器，PB7接收DRV的FALUT数据</p>
+<p><strong>外设</strong>：两个LED显示状态，一个霍尔接口，一个3508的编码器接口，一个6020的编码器接口，一个CAN接口，Benjamin版本还有IMU、无线调试模块，比赛用处较小就删去了</p>
+<h3 id="驱动芯片"><a href="#驱动芯片" class="headerlink" title="驱动芯片"></a>驱动芯片</h3><p>DRV8301大致可以分成四个部分：</p>
+<p><img src="/img/FOC_Hardware3.png" srcset="/img/loading.gif" lazyload alt="VESC"></p>
+<p><strong>电源部分</strong>：DRV8301内置一个BUCK降压电路TPS54160，将24V降到5V</p>
+<p><strong>单片机通信部分</strong>：DRV8301通过SPI和单片机通信，用于向上位机报告 DRV8301 状态及故障</p>
+<p><strong>单片机PWM输入部分</strong>：INH_A&#x2F;B&#x2F;C、INL_A&#x2F;B&#x2F;C。这6个引脚控制GH_A&#x2F;B&#x2F;C、GL_A&#x2F;B&#x2F;C驱动栅极输出</p>
+<p><img src="/img/FOC_Hardware1.png" srcset="/img/loading.gif" lazyload alt="VESC"></p>
+<p><strong>MOS驱动部分</strong>：GH_A&#x2F;B&#x2F;C、GL_A&#x2F;B&#x2F;C、SH_A&#x2F;B&#x2F;C、SL_A&#x2F;B&#x2F;C。GH_A&#x2F;B&#x2F;C接上管栅极，GL_A&#x2F;B&#x2F;C接下管栅极，SH_A&#x2F;B&#x2F;C接上管源极，SL_A&#x2F;B&#x2F;C接下管源极。</p>
+<p>看到一篇华南理工博主自制无刷电机驱动器的博客，他把驱动芯片换成了FD6288Q，确实可以减小不少面积，只需要添加两个降压模块，也很不错，有机会尝试下。</p>
+<h3 id="电流检测"><a href="#电流检测" class="headerlink" title="电流检测"></a>电流检测</h3><p>使用3个AD8418测三相电流，AD8418检测电流的原理是电流通过采样电阻会产生压降，AD8418将这个压降通过内部的运算放大器放大然后输出，输出的这三个电压通过一个RC滤波器输入到单片机的ADC引脚进行采集。</p>
+<h3 id="MOS驱动电路"><a href="#MOS驱动电路" class="headerlink" title="MOS驱动电路"></a>MOS驱动电路</h3>
                 
               </div>
             
             <hr/>
             <div>
               <div class="post-metas my-3">
-  
-    <div class="post-meta mr-3 d-flex align-items-center">
-      <i class="iconfont icon-category"></i>
-      
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E6%9D%BF%E5%AD%90/" class="category-chain-item">板子</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-    </div>
   
   
 </div>
@@ -330,8 +313,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>F4-ADS遥控器</div>
-      <div>http://example.com/2025/11/29/基于ADS8688和STM32F429VET6的遥控器/</div>
+      <div></div>
+      <div>http://example.com/2025/11/29/FOC学习硬件版/</div>
     </div>
     <div class="license-meta">
       
@@ -375,18 +358,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/11/29/FOC%E5%AD%A6%E4%B9%A0%E7%A1%AC%E4%BB%B6%E7%89%88/" title="">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile"></span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/11/29/2026%E5%88%86%E7%94%B5%E6%9D%BFV1.0/" title="分电板">
-                        <span class="hidden-mobile">分电板</span>
+                      <a href="/2025/11/29/%E5%9F%BA%E4%BA%8EADS8688%E5%92%8CSTM32F429VET6%E7%9A%84%E9%81%A5%E6%8E%A7%E5%99%A8/" title="F4-ADS遥控器">
+                        <span class="hidden-mobile">F4-ADS遥控器</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
